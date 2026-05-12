@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz app</title>
+    <style>
+        *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .quiz-container{
+            background: white;
+            width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        h2{
+            margin-bottom: 20px;
+        }
+
+        .option{
+            background: #eee;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .option:hover{
+            background: #dcdcdc;
+        }
+
+        button{
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        button:hover{
+            background: #0056b3;
+        }
+
+        #score{
+            text-align:center;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h2 id="question">Question goes here</h2>
+
+        <div id="options"></div>
+
+        <button id="nextBtn">Next Question</button>
+
+        <p id="score"></p>
+    </div>
+
+    <script>
+      const quizData =[
+      {
+        question:"what does HTML stand for?",
+        options:[
+        "Hyper Text Markup Language",
+        "Home Tool Markup  Language",
+        "Hyperlinks Text Management language",
+        "Hyper Tool Multi language",
+        ],
+
+        answer:"Hyper Text Markup Language"
+
+
+
+
+      },
+
+      {
+        question:"which language is used for styling wed pages?",
+        options:[
+            "HTML",
+            "Python",
+            "CSS",
+            "java"
+        ],
+
+        answer:"CSS"
+
+      },
+
+      {
+        question:"which keyword is used to declare a variabvle in javaScript",
+        options:[
+            "var",
+            "int",
+            "string",
+            "define"
+        ],
+
+        answer:"var"
+
+      }
+    ];
+
+    
+    const questionElement = document.getElementById("question");
+    const optionsElement = document.getElementById("options");
+    const nextBtn = document.getElementById("nextBtn");
+    const scoreElement = document.getElementById("score");
+
+
+    let currentQuestion = 0;
+    let score = 0;
+    let selectedAnswer = "";
+
+
+    function loadQuestion() {
+
+        optionsElement.innerHTML = "";
+
+        let currentQuiz = quizData[currentQuestion];
+
+
+        questionElement.textContent = currentQuiz.question;
+
+        
+        currentQuiz.options.forEach (function(option){
+            const optionDiv = document.createElement("div");
+            optionDiv.classList.add("option");
+            optionDiv.textContent = option;
+            optionDiv.addEventListener("click",function(){
+                selectedAnswer = option;
+
+                const allOptions = document.querySelectorAll(".option");
+
+                allOptions.forEach(function(opt){
+                    opt.style.background = "#eee";
+                });
+
+                optionDiv.style.background = "#90caf9";
+            });
+
+            optionsElement.appendChild(optionDiv);
+
+
+        });
+    }
+
+    nextBtn.addEventListener("click",function(){
+        if(selectedAnswer === quizData[currentQuestion].answer){
+            score++;
+        }
+
+       currentQuestion++;
+
+       selectedAnswer = "";
+
+       if(currentQuestion < quizData.length){
+
+        loadQuestion();
+
+
+       }else{
+
+        questionElement.textContent = "Quiz Completed!";
+        optionsElement.innerHTML = "";
+        nextBtn.style.display = "none";
+        scoreElement.textContent = "Your score: " + score + "/" + quizData.length;
+
+
+       }
+
+    });
+
+    loadQuestion();
+    </script>
+</body>
+</html>
+
+           
